@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stars.game.MarioBros;
 
 public class SelectModeScreen implements Screen {
@@ -33,6 +35,7 @@ public class SelectModeScreen implements Screen {
     TextureRegion BackRegion;
     Drawable drawable ;
     ImageButton backButton;
+    Viewport gamePort;
 
     public SelectModeScreen(MarioBros game){
         this.game = game;
@@ -41,26 +44,28 @@ public class SelectModeScreen implements Screen {
         backGroundTexture = new TextureRegion(backGroundImage);
         oneVone = new TextButton("1 V 1",skin,"small");
         oneVComputer  = new TextButton("Computer",skin,"small");
-        stage = new Stage();
+        camera = new OrthographicCamera();
+        gamePort = new FitViewport(1280,663,camera);
+        camera.setToOrtho(false, gamePort.getWorldWidth(),gamePort.getWorldHeight());
+        stage = new Stage(gamePort,game.batch);
         table = new Table();
 
         backImgPic = new Texture("BackButton_Img.png");
         BackRegion = new TextureRegion(backImgPic);
         drawable = new TextureRegionDrawable(new TextureRegion(BackRegion));
         backButton = new ImageButton(drawable);
-        backButton.setPosition(1,380);
+        backButton.setPosition(1,gamePort.getWorldHeight()-70);
         backButton.setSize(50,50);
 
         table.add(oneVone).width(300).spaceBottom(50);
         table.row();
         table.add(oneVComputer).width(300);
-        table.setPosition(220,50);
+        table.setPosition(320,50);
         table.setFillParent(true);
         stage.addActor(table);
         stage.addActor(backButton);
         Gdx.input.setInputProcessor(stage);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 449);
+
     }
 
     @Override
@@ -76,7 +81,7 @@ public class SelectModeScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(backGroundTexture, 0,0, 800, 449);
+        game.batch.draw(backGroundTexture, 0,0, gamePort.getWorldWidth(),gamePort.getWorldHeight());
         game.batch.end();
         stage.draw();
         backButton.addListener(new ClickListener(){
@@ -103,7 +108,7 @@ public class SelectModeScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        gamePort.update(width, height);
     }
 
     @Override

@@ -14,7 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stars.game.MarioBros;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -36,13 +38,18 @@ public class HomeMenu implements  Screen {
     private Texture tankImage;
     private TextButton buttonPlay,buttonExit;
     private Label heading;
+    private Viewport gamePort;
 
 
 
     public HomeMenu(MarioBros game){
         this.game = game;
         skin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-        stage = new Stage(new ScreenViewport());
+        //stage = new Stage(new ScreenViewport());
+        camera = new OrthographicCamera();
+        gamePort = new FitViewport(1280,663,camera);
+        stage = new Stage(gamePort, game.batch);
+
         table = new Table();
 
         buttonPlay = new TextButton("LOGIN",skin,"small");
@@ -51,22 +58,21 @@ public class HomeMenu implements  Screen {
         table.add(buttonPlay).width(150).spaceBottom(50);
         table.row();
         table.add(buttonExit).width(150);
-        table.setPosition(220,50);
+        table.setPosition(350,50);
         table.setFillParent(true);
 
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
         backgroundImage = new Texture("image1.jpg");
-        BackgroundTexture = new TextureRegion(backgroundImage,0, 0,800,449);
+        BackgroundTexture = new TextureRegion(backgroundImage);
         tankImage = new Texture("AbramsTank.png");
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 449);
+
+        camera.setToOrtho(false, gamePort.getWorldWidth(), gamePort.getWorldHeight());
+
 
     }
     @Override
     public void show() {
-
-
     }
 
     @Override
@@ -77,8 +83,8 @@ public class HomeMenu implements  Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(BackgroundTexture, 0,0, 800, 449);
-        game.batch.draw(tankImage,90,40,300,250);
+        game.batch.draw(BackgroundTexture, 0,0,gamePort.getWorldWidth(),gamePort.getWorldHeight());
+        game.batch.draw(tankImage,130,80,400,350);
         game.batch.end();
         stage.draw();
         buttonExit.addListener(new ClickListener(){
@@ -90,7 +96,7 @@ public class HomeMenu implements  Screen {
         buttonPlay.addListener(new ClickListener(){
             public void clicked(InputEvent event,float x,float y){
                 game.ClickSound.play();
-                game.setScreen(new SelectModeScreen(game));
+                game.setScreen(new LoginScreen(game));
                 dispose();
             }
         });
@@ -98,7 +104,7 @@ public class HomeMenu implements  Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        gamePort.update(width, height);
     }
 
     @Override

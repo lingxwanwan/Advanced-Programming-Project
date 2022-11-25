@@ -29,7 +29,6 @@ public class MarioBros extends Game {
 		tanks = new AllTanksData();
 		ClickSound = Gdx.audio.newSound(Gdx.files.internal("ClickSound.wav"));
 		ClickSound.setVolume(1,100);
-		graphics.setContinuousRendering(false);
 		setScreen(new MainMenu(this));
 	}
 

@@ -8,20 +8,22 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stars.game.MarioBros;
 import sun.jvm.hotspot.utilities.BitMap;
+
+import java.lang.reflect.Type;
 
 import static com.badlogic.gdx.Gdx.graphics;
 
@@ -31,9 +33,6 @@ public class oneVone_Selection_Screen implements Screen {
     int tankIndex ;
     Skin skin ;
 
-    Label.LabelStyle labelStyle;
-    Label popUpMessage;
-    BitmapFont myFont;
 
     Texture BackgroundImg ;
     Stage stage;
@@ -62,71 +61,68 @@ public class oneVone_Selection_Screen implements Screen {
     TextButton ChooseButton ;
 
     OrthographicCamera camera;
-
+    private Viewport gamePort;
+    private Table table;
     public oneVone_Selection_Screen(MarioBros game){
         this.game = game;
         tankIndex = 0;
         skin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
-
-        //labelStyle = new Label.LabelStyle();
-        //myFont = new BitmapFont(Gdx.files.internal("skin/font-big.fnt"));
-        ////labelStyle.font = myFont;
-        //labelStyle.fontColor = Color.WHITE;
-
-        /*popUpMessage = new Label("SELECT TANK FOR FIRST PLAYER",labelStyle);
-        popUpMessage.setSize(50,50);
-        popUpMessage.setPosition(0,50);
-        popUpMessage.setAlignment(Align.bottomRight);
-        stage.addActor(popUpMessage);*/
-
-
+        camera = new OrthographicCamera();
+        gamePort = new FitViewport(1280,663,camera);
+        camera.setToOrtho(false, gamePort.getWorldWidth(),gamePort.getWorldHeight());
+        stage = new Stage(gamePort, game.batch);
         flag = false;
         flagBack = false;
         flagChoose = false;
         chooseCount = 0;
+        table = new Table();
 
-
-        stage = new Stage();
         BackgroundImg = new Texture("HomeMenu_2.jpg");
-        BackgroundImgTexture = new TextureRegion(BackgroundImg,0,0,800,449);
+        BackgroundImgTexture = new TextureRegion(BackgroundImg);
 
         backImgPic = new Texture("BackButton_Img.png");
         BackRegion = new TextureRegion(backImgPic);
         drawable = new TextureRegionDrawable(new TextureRegion(BackRegion));
         backButton = new ImageButton(drawable);
-        backButton.setPosition(1,380);
+        backButton.setPosition(1,gamePort.getWorldHeight()-70);
         backButton.setSize(50,50);
 
         changeTankPic = new Texture("ChangeTankImage.png");
         changeTankRegion = new TextureRegion(changeTankPic);
         drawableChangeTank = new TextureRegionDrawable(new TextureRegion(changeTankRegion));
         changeTank = new ImageButton(drawableChangeTank);
-        changeTank.setPosition(720,270);
-        changeTank.setSize(50,50);
+        /*changeTank.setPosition(720,270);
+        changeTank.setSize(50,50);*/
+
 
         backTankPic = new Texture("backTankImage.png");
         backTankRegion = new TextureRegion(backTankPic);
         drawablebackTank = new TextureRegionDrawable(new TextureRegion(backTankRegion));
         backTank = new ImageButton(drawablebackTank);
-        backTank.setPosition(470,270);
-        backTank.setSize(50,50);
+        //backTank.setPosition(470,270);
+        //backTank.setSize(50,50);
+
+
 
         ChooseButton = new TextButton("CHOOSE",skin,"small");
         ChooseButton.setWidth(300);
         ChooseButton.setHeight(50);
-        ChooseButton.setPosition(470,150);
+        //ChooseButton.setPosition(470,150);
 
-        stage.addActor(backButton);
-        stage.addActor(changeTank);
-        stage.addActor(backTank);
-        stage.addActor(ChooseButton);
+        table.add(backTank).width(50).height(50).spaceRight(280).spaceBottom(80);
+        table.add(changeTank).width(50).height(50).space(0,0,60,0);
+
+        table.row();
+        table.add();
+        table.row();
+        table.add(ChooseButton).width(300).spaceTop(70);
+
+        table.setPosition(350,30);
+        table.setFillParent(true);
+
+        stage.addActor(table);
         stage.addActor(backButton);
         Gdx.input.setInputProcessor(stage);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 449);
-        graphics.setContinuousRendering(false);
-
-
     }
     @Override
     public void show() {
@@ -135,42 +131,52 @@ public class oneVone_Selection_Screen implements Screen {
 
     @Override
     public void render(float delta) {
-        graphics.setContinuousRendering(false);
         ScreenUtils.clear(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(BackgroundImgTexture,0,0,800,449);
 
+        game.batch.draw(BackgroundImgTexture,0,0,gamePort.getWorldWidth(),gamePort.getWorldHeight());
+        game.font.draw(game.batch, "Select tank for Player1 and Player2", 850, 200);
+        int imx = 850;
+        int imy = 300;
         if (flag){
             try{
-                game.batch.draw(game.tanks.getTanksList().get(++tankIndex).tankImage,520,200,200,200);
+                game.batch.draw(game.tanks.getTanksList().get(++tankIndex).tankImage,imx,imy,imy,imy);
                 flag = false;
             }
             catch (Exception e){
-                game.batch.draw(game.tanks.getTanksList().get(--tankIndex).tankImage,520,200,200,200);
+                game.batch.draw(game.tanks.getTanksList().get(--tankIndex).tankImage,imx,imy,imy,imy);
                 flag = false;
             }
         }
         else if (flagBack){
             try{
-                game.batch.draw(game.tanks.getTanksList().get(--tankIndex).tankImage,520,200,200,200);
+                game.batch.draw(game.tanks.getTanksList().get(--tankIndex).tankImage,imx,imy,imy,imy);
+
                 flagBack = false;
             }
             catch (Exception e){
-                game.batch.draw(game.tanks.getTanksList().get(++tankIndex).tankImage,520,200,200,200);
+                game.batch.draw(game.tanks.getTanksList().get(++tankIndex).tankImage,imx,imy,imy,imy);
                 flagBack = false;
             }
         }
         else{
-            game.batch.draw(game.tanks.getTanksList().get(tankIndex).tankImage,520,200,200,200);
+            game.batch.draw(game.tanks.getTanksList().get(tankIndex).tankImage,imx,imy,imy,imy);
             flag = false;
             flagBack = false;
         }
+
         game.batch.end();
         stage.draw();
+
         if (flagChoose){
+            Sprite  sprite;
+
+            sprite = new Sprite(game.tanks.getTanksList().get(tankIndex).tankImage);
+            sprite.setSize(50,50);
+            sprite.setPosition(500,600);
             if (++chooseCount==1){
                 game.FirstPlayer = new Player(game.tanks.getTanksList().get(tankIndex));
             }
@@ -178,9 +184,9 @@ public class oneVone_Selection_Screen implements Screen {
                 game.SecondPlayer = new Player(game.tanks.getTanksList().get(tankIndex));
                 game.setScreen(new oneVoneGameScreen(game));
             }
-            System.out.println(chooseCount);
             flagChoose = false;
         }
+
         handleinput(delta);
     }
     void handleinput(float del){
@@ -217,7 +223,7 @@ public class oneVone_Selection_Screen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        gamePort.update(width, height);
     }
 
     @Override

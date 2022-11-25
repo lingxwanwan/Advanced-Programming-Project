@@ -6,7 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stars.game.MarioBros;
 import com.badlogic.gdx.graphics.Camera;
 
@@ -17,12 +21,17 @@ public class MainMenu implements Screen{
     private final Texture backgroundImage ;
     private final OrthographicCamera camera;
     private final TextureRegion BackgroundTexture;
+    private Viewport gameport;
+
     public MainMenu(MarioBros game){
         this.game = game;
+
         backgroundImage = new Texture("StartingImage.jpg");
-        BackgroundTexture = new TextureRegion(backgroundImage, 0, 0,1240,1020);
         camera  = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        BackgroundTexture = new TextureRegion(backgroundImage);
+        gameport = new FitViewport(1280,663,camera);
+
+        camera.setToOrtho(false, gameport.getWorldWidth(), gameport.getWorldHeight());
 
     }
     @Override
@@ -40,8 +49,8 @@ public class MainMenu implements Screen{
 
         game.batch.begin();
 
-        game.batch.draw(BackgroundTexture, 0,0, 800, 480);
-        game.font.draw(game.batch, "Click anywhere to begin!", 365, 140);
+        game.batch.draw(BackgroundTexture, 0,0,gameport.getWorldWidth(),gameport.getWorldHeight());
+        game.font.draw(game.batch, "Click anywhere to begin!", 615, 440);
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
@@ -53,7 +62,7 @@ public class MainMenu implements Screen{
 
     @Override
     public void resize(int width, int height) {
-
+        gameport.update(width,height);
     }
 
     @Override

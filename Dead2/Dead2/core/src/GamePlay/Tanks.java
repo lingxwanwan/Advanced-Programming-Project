@@ -1,13 +1,18 @@
 package GamePlay;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.*;
 
 import java.security.PublicKey;
 
-public class Tanks {
+public class Tanks extends Sprite {
     private String name;
     public float radiusOfDamage;
     public Texture tankImage;
+    public World world;
+    public Body b2body;
+    public String path;
     public Tanks(String Name){
         this.name = Name;
     }
