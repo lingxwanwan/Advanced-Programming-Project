@@ -32,6 +32,7 @@ public class LoginScreen implements Screen {
     private ImageButton backButton;
     public LoginScreen(MarioBros game){
         this.game = game;
+
         img  = new Texture("LoginPage.png");
         skin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         table = new Table();

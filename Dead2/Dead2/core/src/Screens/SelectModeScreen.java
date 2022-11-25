@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -35,6 +32,7 @@ public class SelectModeScreen implements Screen {
     TextureRegion BackRegion;
     Drawable drawable ;
     ImageButton backButton;
+    TextButton ResumeButton;
     Viewport gamePort;
 
     public SelectModeScreen(MarioBros game){
@@ -44,6 +42,8 @@ public class SelectModeScreen implements Screen {
         backGroundTexture = new TextureRegion(backGroundImage);
         oneVone = new TextButton("1 V 1",skin,"small");
         oneVComputer  = new TextButton("Computer",skin,"small");
+        ResumeButton = new TextButton("Resume Games",skin,"small");
+
         camera = new OrthographicCamera();
         gamePort = new FitViewport(1280,663,camera);
         camera.setToOrtho(false, gamePort.getWorldWidth(),gamePort.getWorldHeight());
@@ -59,7 +59,9 @@ public class SelectModeScreen implements Screen {
 
         table.add(oneVone).width(300).spaceBottom(50);
         table.row();
-        table.add(oneVComputer).width(300);
+        table.add(oneVComputer).width(300).spaceBottom(50);
+        table.row();
+        table.add(ResumeButton).width(300);
         table.setPosition(320,50);
         table.setFillParent(true);
         stage.addActor(table);

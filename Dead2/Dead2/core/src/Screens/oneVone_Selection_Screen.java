@@ -83,6 +83,8 @@ public class oneVone_Selection_Screen implements Screen {
         backImgPic = new Texture("BackButton_Img.png");
         BackRegion = new TextureRegion(backImgPic);
         drawable = new TextureRegionDrawable(new TextureRegion(BackRegion));
+
+
         backButton = new ImageButton(drawable);
         backButton.setPosition(1,gamePort.getWorldHeight()-70);
         backButton.setSize(50,50);
@@ -183,6 +185,7 @@ public class oneVone_Selection_Screen implements Screen {
             else if (chooseCount==2){
                 game.SecondPlayer = new Player(game.tanks.getTanksList().get(tankIndex));
                 game.setScreen(new oneVoneGameScreen(game));
+                dispose();
             }
             flagChoose = false;
         }

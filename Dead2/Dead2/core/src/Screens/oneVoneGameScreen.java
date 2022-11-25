@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -20,10 +21,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stars.game.MarioBros;
+import sun.security.krb5.internal.PAForUserEnc;
 
 import static com.badlogic.gdx.Gdx.graphics;
 import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
@@ -38,6 +45,7 @@ public class oneVoneGameScreen implements Screen {
     private Stage stage;
     private World world;
     private Box2DDebugRenderer b2dr;
+    private Texture PauseImage;
 
     public oneVoneGameScreen(MarioBros game){
         this.game = game;
@@ -46,6 +54,9 @@ public class oneVoneGameScreen implements Screen {
         stage = new Stage(gamePort,game.batch);
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("World.tmx");
+
+        PauseImage = new Texture("pause.png");
+
 
         renderer = new OrthogonalTiledMapRenderer(map);
         camera.setToOrtho(false,gamePort.getWorldWidth()/2,gamePort.getWorldHeight()/2);
@@ -81,57 +92,6 @@ public class oneVoneGameScreen implements Screen {
                 continue;
             }
         }
-
-
-
-
-        /*try{
-
-
-
-            for (MapObject object : map.getLayers().get(2).getObjects()){
-
-                PolygonShape polygon = new PolygonShape();
-                float[] vertices = ((PolygonMapObject) object).getPolygon().getTransformedVertices();
-                float[] worldvertices = new float[vertices.length];
-                for (int i=0;i<vertices.length;++i){
-                    worldvertices[i] = vertices[i]/100;
-                }
-                polygon.set(worldvertices);
-                bdef.type = BodyDef.BodyType.StaticBody;
-                body = world.createBody(bdef);
-                fdef.shape = polygon;
-                body.createFixture(polygon,1);
-                polygon.dispose();
-
-                PolygonShape polygon = new PolygonShape();
-                float[] vertices = ((PolygonMapObject)object).getPolygon().getTransformedVertices();
-
-                float[] worldVertices = new float[vertices.length];
-
-                for (int i = 0; i < vertices.length; ++i) {
-                    System.out.println(vertices[i]);
-                    worldVertices[i] = vertices[i] / 100;
-
-                }
-
-                polygon.set(worldVertices);
-                bdef.type = BodyDef.BodyType.StaticBody;
-                body = world.createBody(bdef);
-                fdef.shape = polygon;
-                body.createFixture(fdef);
-
-
-            }
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }*/
-
-
-
-
-
 
     }
 
@@ -197,12 +157,14 @@ public class oneVoneGameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         renderer.render();
         game.batch.begin();
-        //game.batch.draw(game.FirstPlayer.getTanks().tankImage,500,300,50,50);
-        //game.batch.draw(game.SecondPlayer.getTanks().tankImage,800,300,50,50);
+        game.batch.draw(game.FirstPlayer.getTanks().tankImage,480,295,50,50);
+        game.batch.draw(game.SecondPlayer.getTanks().tankImage,1100,455,50,50);
+        game.batch.draw(PauseImage,gamePort.getWorldWidth()-70,gamePort.getWorldHeight()-70,50,50);
         game.batch.end();
-        stage.draw();
+        //stage.draw();
         b2dr.render(world,camera.combined);
         update(delta);
+        stage.draw();
     }
 
     @Override

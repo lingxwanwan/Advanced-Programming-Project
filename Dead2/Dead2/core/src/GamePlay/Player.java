@@ -8,30 +8,59 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-public class Player extends Sprite {
+interface  PlayerInterface {
+    public Tanks getTanks();
+    public Tanks setTanks();
+
+    public void decHealth(float value);
+    public void setHealth(float health);
+    public float getHealth();
+
+    public Boolean getWiningStatus();
+    public void setWiningStatus(Boolean value);
+
+
+
+}
+public class Player extends Sprite implements PlayerInterface {
     private Tanks tanks;
-    private Vector2 velocity;
-
-    private float speed = 100;
-    private float gravity = 9.8f;
-    private World world;
-    private Sprite sprite;
-
+    private float health;
+    private Boolean WiningStatus;
     public Player(Tanks tanks){
-        this.tanks = new Tanks(tanks.getName());
-    }
-    public void update (float delta){
-        velocity.y -=gravity*delta;
-
-        if (velocity.y>speed)
-            velocity.y = speed;
-        else if (velocity.y<speed)
-            velocity.y = -speed;
-        setX(getX()+velocity.x*delta);
-        setY(getY()+velocity.y*delta);
+        this.tanks = tanks;
     }
 
     public Tanks getTanks(){
         return tanks;
+    }
+
+    @Override
+    public Tanks setTanks() {
+        return null;
+    }
+
+    @Override
+    public void decHealth(float value) {
+
+    }
+
+    @Override
+    public void setHealth(float health) {
+
+    }
+
+    @Override
+    public float getHealth() {
+        return 0;
+    }
+
+    @Override
+    public Boolean getWiningStatus() {
+        return null;
+    }
+
+    @Override
+    public void setWiningStatus(Boolean value) {
+
     }
 }
