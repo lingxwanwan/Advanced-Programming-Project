@@ -29,38 +29,38 @@ import static com.badlogic.gdx.Gdx.graphics;
 
 public class oneVone_Selection_Screen implements Screen {
 
-    MarioBros game ;
-    int tankIndex ;
-    Skin skin ;
+    private MarioBros game ;
+    private int tankIndex ;
+    private Skin skin ;
 
 
-    Texture BackgroundImg ;
-    Stage stage;
-    TextureRegion BackgroundImgTexture;
-    Texture backImgPic;
-    TextureRegion BackRegion;
-    Drawable drawable ;
-    ImageButton backButton;
+    private Texture BackgroundImg ;
+    private Stage stage;
+    private TextureRegion BackgroundImgTexture;
+    private Texture backImgPic;
+    private TextureRegion BackRegion;
+    private Drawable drawable ;
+    private ImageButton backButton;
 
-    Texture changeTankPic;
-    Drawable drawableChangeTank;
-    TextureRegion changeTankRegion;
-    ImageButton changeTank;
+    private Texture changeTankPic;
+    private Drawable drawableChangeTank;
+    private TextureRegion changeTankRegion;
+    private ImageButton changeTank;
 
-    Texture backTankPic;
-    Drawable drawablebackTank;
-    TextureRegion backTankRegion;
-    ImageButton backTank;
+    private Texture backTankPic;
+    private Drawable drawablebackTank;
+    private TextureRegion backTankRegion;
+    private ImageButton backTank;
 
 
-    Boolean flag;
-    Boolean flagBack;
-    Boolean flagChoose;
-    int chooseCount;
+    private Boolean flag;
+    private Boolean flagBack;
+    private Boolean flagChoose;
+    private int chooseCount;
 
-    TextButton ChooseButton ;
+    private TextButton ChooseButton ;
 
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
     private Viewport gamePort;
     private Table table;
     public oneVone_Selection_Screen(MarioBros game){
@@ -186,6 +186,7 @@ public class oneVone_Selection_Screen implements Screen {
                 game.SecondPlayer = new Player(game.tanks.getTanksList().get(tankIndex));
                 game.setScreen(new oneVoneGameScreen(game));
                 dispose();
+
             }
             flagChoose = false;
         }

@@ -28,8 +28,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.sun.tools.javac.comp.Enter;
 public class HomeMenu implements  Screen {
     private MarioBros game;
-    private TextureAtlas atlas;
-    private Texture backgroundImage;
+    private  final Texture   backgroundImage;
     private final TextureRegion BackgroundTexture;
     private OrthographicCamera camera;
     private Stage stage;
@@ -37,7 +36,6 @@ public class HomeMenu implements  Screen {
     private Table table;
     private Texture tankImage;
     private TextButton buttonPlay,buttonExit;
-    private Label heading;
     private Viewport gamePort;
 
 
@@ -68,8 +66,6 @@ public class HomeMenu implements  Screen {
         tankImage = new Texture("AbramsTank.png");
 
         camera.setToOrtho(false, gamePort.getWorldWidth(), gamePort.getWorldHeight());
-
-
     }
     @Override
     public void show() {

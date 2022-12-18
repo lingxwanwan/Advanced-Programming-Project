@@ -1,5 +1,6 @@
 package com.stars.game;
 
+import Box2dObjects.Factory;
 import GamePlay.AllTanksData;
 import GamePlay.Player;
 import GamePlay.Tanks;
@@ -16,8 +17,10 @@ import java.util.HashMap;
 import static com.badlogic.gdx.Gdx.graphics;
 
 public class MarioBros extends Game {
-	HashMap<Integer,User> UserList ;
+	public HashMap<Integer,User> UserList ;
 	public SpriteBatch batch;
+	public Factory factory = Factory.getInstance();
+	public static final int PPM = 100;
 	public BitmapFont font;
 	public AllTanksData tanks;
 	public Sound ClickSound;

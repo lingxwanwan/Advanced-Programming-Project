@@ -10,9 +10,7 @@ public class Tanks extends Sprite {
     private String name;
     public float radiusOfDamage;
     public Texture tankImage;
-    public World world;
-    public Body b2body;
-    public String path;
+
     public Tanks(String Name){
         this.name = Name;
     }

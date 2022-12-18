@@ -8,9 +8,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
+import java.util.ArrayList;
+
 interface  PlayerInterface {
     public Tanks getTanks();
-    public Tanks setTanks();
+    public Tanks setTanks(Tanks tanks);
 
     public void decHealth(float value);
     public void setHealth(float health);
@@ -35,13 +37,12 @@ public class Player extends Sprite implements PlayerInterface {
     }
 
     @Override
-    public Tanks setTanks() {
+    public Tanks setTanks(Tanks tanks) {
         return null;
     }
 
     @Override
     public void decHealth(float value) {
-
     }
 
     @Override
@@ -62,5 +63,11 @@ public class Player extends Sprite implements PlayerInterface {
     @Override
     public void setWiningStatus(Boolean value) {
 
+    }
+    public ArrayList<Float> update(Body body){
+        ArrayList<Float> arr = new ArrayList<>();
+        arr.add(body.getPosition().x-50/2);
+        arr.add(body.getPosition().y-20);
+        return arr;
     }
 }
